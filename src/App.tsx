@@ -24,6 +24,8 @@ export default function App() {
       <Route element={<AdminLayout />}>
         <Route path='/admin' element={<AdminHome />} />
       </Route>
+
+      <Route path='*' element={<div>404 Not Found</div>} />
     </Routes>
   )
 }
