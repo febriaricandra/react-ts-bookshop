@@ -5,6 +5,7 @@ import CommonLayout from './components/layouts/CommonLayout'
 import AuthLayout from './components/layouts/AuthLayout'
 import AdminLayout from './components/layouts/AdminLayout'
 import Register from './pages/auth/Register'
+import Login from './pages/auth/Login'
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
       {/* Register & Login Routes */}
       <Route element={<AuthLayout />}>
         <Route path='/register' element={<Register />} />
+        <Route path='/login' element={<Login />} />
       </Route>
 
       {/* Common Routes */}
