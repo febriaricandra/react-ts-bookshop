@@ -1,13 +1,16 @@
 import { Outlet } from 'react-router-dom';
+import Navbar from '../headers/Navbar';
 
 function CommonLayout() {
   return (
-    <div>
-      <header>Common User Header</header>
-      <main>
+    <div className='bg-gray-800 min-h-screen flex flex-col'>
+      <header>
+        <Navbar />
+      </header>
+      <main className='max-w-screen-xl mx-auto'>
         <Outlet />
       </main>
-      <footer>Common User Footer</footer>
+      <footer></footer>
     </div>
   );
 }

@@ -7,12 +7,13 @@ type BookResponse = {
 };
 
 class BookService {
-    static async getBooks() {
+    static async getBooks(): Promise<BookResponse> {
         try {
             const response = await Api.get<BookResponse>("/books");
             return response.data;
         } catch (error) {
-            return error;
+            console.error("Failed to fetch books")
+            throw new Error("Failed to fetch books")
         }
     }
 }
