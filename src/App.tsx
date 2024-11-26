@@ -6,6 +6,7 @@ import AuthLayout from './components/layouts/AuthLayout'
 import AdminLayout from './components/layouts/AdminLayout'
 import Register from './pages/auth/Register'
 import Login from './pages/auth/Login'
+import Details from './pages/Details'
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
       {/* Common Routes */}
       <Route element={<CommonLayout />}>
         <Route path='/' element={<Home />} />
+        <Route path='/books/:id' element={<Details />} />
       </Route>
 
       {/* Admin Routes */}
