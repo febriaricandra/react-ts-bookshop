@@ -22,13 +22,4 @@ Api.interceptors.request.use(
     }
 );
 
-Api.interceptors.response.use(
-    (response) => {
-        return response;
-    },
-    (error) => {
-        return Promise.reject(error);
-    }
-);
-
 export default Api;

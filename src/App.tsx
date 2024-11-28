@@ -7,6 +7,7 @@ import AdminLayout from './components/layouts/AdminLayout'
 import Register from './pages/auth/Register'
 import Login from './pages/auth/Login'
 import Details from './pages/Details'
+import Carts from './pages/Carts'
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
       <Route element={<CommonLayout />}>
         <Route path='/' element={<Home />} />
         <Route path='/books/:id' element={<Details />} />
+        <Route path='/carts' element={<Carts />} />
       </Route>
 
       {/* Admin Routes */}
