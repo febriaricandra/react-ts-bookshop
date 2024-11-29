@@ -50,6 +50,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         // Remove user from localStorage
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        window.location.reload();
         setUser(null);
     };
 
