@@ -22,7 +22,6 @@ class AuthServices {
     static async login(data: Data): Promise<UserDetailResponse> {
         try {
             const response = await Api.post<UserDetailResponse>("/login", data);
-            console.log(response);
             return response.data;
         } catch (error) {
             console.error("Failed to login")
@@ -37,6 +36,16 @@ class AuthServices {
         } catch (error) {
             console.error("Failed to register")
             throw new Error("Failed to register")
+        }
+    }
+
+    static async profile(): Promise<UserDetailResponse> {
+        try {
+            const response = await Api.get<UserDetailResponse>("/profile");
+            return response.data;
+        } catch (error) {
+            // console.error("Failed to fetch profile")
+            throw new Error("Failed to fetch profile")
         }
     }
 }

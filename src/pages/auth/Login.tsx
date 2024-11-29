@@ -1,8 +1,10 @@
 import { useState } from "react"
 import { useAuth } from "../../context/AuthContext";
 import { useFlashMessage } from "../../context/FlashMessageContext";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+    const navigate = useNavigate();
     const { login } = useAuth();
     const { showMessage }: any = useFlashMessage();
     const [email, setEmail] = useState("");
@@ -11,8 +13,17 @@ function Login() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            login(email, password);
-            showMessage("Login successful", "success");
+            const user = await login(email, password);
+            if (user?.isAdmin) {
+                showMessage("Login successful", "success");
+                navigate("/admin");
+            } else if (user) {
+                showMessage("Login successful", "success");
+                navigate("/profile");
+            } else {
+                navigate("/login");
+                throw new Error("Login failed");
+            }
         } catch (error) {
             showMessage("Login failed", "error");
         }

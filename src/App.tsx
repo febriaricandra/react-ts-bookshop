@@ -8,6 +8,7 @@ import Register from './pages/auth/Register'
 import Login from './pages/auth/Login'
 import Details from './pages/Details'
 import Carts from './pages/Carts'
+import ProtectedRoute from './components/protected/ProtectedRoute'
 
 export default function App() {
   return (
@@ -28,8 +29,15 @@ export default function App() {
 
       {/* Admin Routes */}
       <Route element={<AdminLayout />}>
-        <Route path='/admin' element={<AdminHome />} />
+        <Route path='/admin' element={
+          <ProtectedRoute>
+            <AdminHome />
+          </ProtectedRoute>
+        } />
+
       </Route>
+
+      {/* Not Found Route */}
 
       <Route path='*' element={<div>404 Not Found</div>} />
     </Routes>
