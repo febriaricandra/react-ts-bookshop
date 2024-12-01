@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext";
 import { SquareUser } from "lucide-react";
+import { useCart } from "../../context/CartContext";
 
 function Navbar() {
     const { logout } = useAuth();
+    const { cart } = useCart();
     const user = localStorage.getItem("user");
     const onToggleAccount = () => {
         const dropdown = document.getElementById('user-dropdown');
@@ -56,12 +58,16 @@ function Navbar() {
                     <div className="flex flex-row gap-2 relative">
                         <div className="flex items-center lg:space-x-2">
                             <Link to="/carts" id="myCartDropdownButton1" data-dropdown-toggle="myCartDropdown1" type="button" className="inline-flex items-center rounded-lg justify-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm font-medium leading-none text-gray-900 dark:text-white">
-                                <span className="sr-only">
-                                    Cart
-                                </span>
-                                <svg className="w-5 h-5 lg:me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
-                                </svg>
+                                <div className="relative">
+                                    <span className="sr-only">
+                                        Cart
+                                    </span>
+                                    <svg className="w-5 h-5 lg:me-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 4h1.5L9 16m0 0h8m-8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm8 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm-8.5-3h9.25L19 7H7.312" />
+                                    </svg>
+                                    <span className="sr-only">Notifications</span>
+                                    <div className="absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">{cart.length}</div>
+                                </div>
                                 <span className="hidden sm:flex">My Cart</span>
                             </Link>
                         </div>
@@ -99,7 +105,7 @@ function Navbar() {
                                     </div>
                                 </>
                             ) : (
-                                <div className="flex items-center space-x-2">
+                                <div className="flex items-center space-x-2 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-lg">
                                     <Link to="/login" className="flex flex-row gap-1 text-sm font-medium text-gray-900 dark:text-white hover:text-primary-700 dark:hover:text-primary-500">
                                         <SquareUser size={20} className="text-gray-900 dark:text-white" />
                                         <span className="hidden sm:flex">Login</span>

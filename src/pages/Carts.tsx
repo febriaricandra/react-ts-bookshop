@@ -1,4 +1,10 @@
+import { useCart } from "../context/CartContext"
+import CartList from "../components/cart/CartList";
+
 function Carts() {
+    const { cart } = useCart();
+
+    console.log(cart);
     return (
         <section className="py-8 antialiased md:py-16">
             <div className="mx-auto max-w-screen-xl px-4 2xl:px-0">
@@ -7,28 +13,7 @@ function Carts() {
                 <div className="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
                     <div className="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
                         <div className="space-y-6">
-                            <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 md:p-6">
-                                <div className="space-y-4 md:flex md:items-center md:gap-6 md:space-y-0">
-                                    <a href="#" className="shrink-0 md:order-1">
-                                        <img className="h-20 w-20 dark:hidden" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg" alt="imac image" />
-                                        <img className="hidden h-20 w-20 dark:block" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg" alt="imac image" />
-                                    </a>
-
-                                    <div className="w-full min-w-0 flex-1 space-y-4 md:order-2 md:max-w-md">
-                                        <a href="#" className="text-base font-medium text-gray-900 hover:underline dark:text-white">PC system All in One APPLE iMac (2023) mqrq3ro/a, Apple M3, 24" Retina 4.5K, 8GB, SSD 256GB, 10-core GPU, Keyboard layout INT</a>
-
-                                        <div className="flex items-center gap-4">
-
-                                            <button type="button" className="inline-flex items-center text-sm font-medium text-red-600 hover:underline dark:text-red-500">
-                                                <svg className="me-1.5 h-5 w-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18 17.94 6M18 18 6.06 6" />
-                                                </svg>
-                                                Remove
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <CartList />
                         </div>
                         <div className="hidden xl:mt-8 xl:block">
                             <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">People also bought</h3>
