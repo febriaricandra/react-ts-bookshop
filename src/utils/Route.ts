@@ -30,7 +30,18 @@ export const routes: Route[] = [
     {
         name: 'Products',
         icon: 'products',
-        path: '/products',
+        children: [
+            {
+                name: 'All Products',
+                icon: 'clock',
+                path: '/products/all',
+            },
+            {
+                name: 'Best Sellers',
+                icon: 'check',
+                path: '/products/best-sellers',
+            }
+        ]
     },
     {
         name: 'Customers',

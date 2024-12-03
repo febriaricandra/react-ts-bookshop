@@ -9,6 +9,7 @@ import Login from './pages/auth/Login'
 import Details from './pages/Details'
 import Carts from './pages/Carts'
 import ProtectedRoute from './components/protected/ProtectedRoute'
+import Products from './pages/admin/Products'
 
 export default function App() {
   return (
@@ -35,6 +36,11 @@ export default function App() {
           </ProtectedRoute>
         } />
 
+        <Route path='/products/all' element={
+          <ProtectedRoute>
+            <Products />
+          </ProtectedRoute>
+        } />
       </Route>
 
       {/* Not Found Route */}
