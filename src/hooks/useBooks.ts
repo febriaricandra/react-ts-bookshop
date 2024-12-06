@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import BookService from "../services/BookService";
-import { Book } from "../@types/book";
+import { BookResponse } from "../@types/book";
 
-const useBooks = () => {
-  const [books, setBooks] = useState<Book[] | undefined>();
+const useBooks = (page: number, pageSize: number) => {
+  const [books, setBooks] = useState<BookResponse | undefined>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   const fetchBooks = async () => {
     try {
-      const response = await BookService.getBooks();
-      setBooks(response.data);
+      const response = await BookService.getBooks(page, pageSize);
+      setBooks(response);
     } catch (error) {
       if (error instanceof Error) {
         setError(`Failed to fetch book details: ${error.message}`);
@@ -24,8 +24,8 @@ const useBooks = () => {
 
   useEffect(() => {
     fetchBooks();
-  }, []);
-  return { books, loading, error };
+  }, [page, pageSize]);
+  return { books, loading, error, totalItems: books?.total_items, totalPages: books?.total_pages, page: books?.page };
 };
 
 export default useBooks;

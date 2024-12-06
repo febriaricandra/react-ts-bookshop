@@ -16,7 +16,7 @@ function AdminLayout() {
   return (
     <div className="min-h-screen bg-gray-800 flex flex-col">
       <NavAdmin onToggleSidebar={onToggleSidebar} />
-      <main className="bg-gray-900 w-full z-0 relative">
+      <main className="bg-gray-900 w-full z-0">
 
         <aside id="default-sidebar" className="fixed top-14 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
           <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">

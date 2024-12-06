@@ -1,10 +1,6 @@
 import Api from "../utils/Api";
-import { Book } from "../@types/book";
+import { Book, BookResponse } from "../@types/book";
 
-type BookResponse = {
-    data: Book[];
-    status: boolean;
-};
 
 type BookDetailResponse = {
     data: Book;
@@ -12,9 +8,9 @@ type BookDetailResponse = {
 };
 
 class BookService {
-    static async getBooks(): Promise<BookResponse> {
+    static async getBooks(page: number,pageSize: number): Promise<BookResponse> {
         try {
-            const response = await Api.get<BookResponse>("/books");
+            const response = await Api.get<BookResponse>(`/books?page=${page}&page_size=${pageSize}`);
             return response.data;
         } catch (error) {
             console.error("Failed to fetch books")
