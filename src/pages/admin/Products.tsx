@@ -34,9 +34,9 @@ const Products = () => {
     }
 
     try {
-      const response = BookService.createBook(formData);
+      const response = await BookService.createBook(formData);
       console.log(response)
-      if (response && response.status === 201) {
+      if (response && response.status === true) {
         showMessage('Product added successfully', 'success');
         setIsOpen(false);
       }
