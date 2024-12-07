@@ -1,43 +1,103 @@
 import * as React from 'react';
 import {
-  ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
   getSortedRowModel,
   SortingState,
   getPaginationRowModel,
+  createColumnHelper,
 } from '@tanstack/react-table';
+import { Book } from '../../@types/book';
+import BookService from '../../services/BookService';
+import { useEffect } from 'react';
 
-interface TableProps<T> {
-  data: T[];
-  columns: ColumnDef<T, any>[];
-  pageSizeOptions?: number[]; // Optional: Custom page size optionsfe
-  onEdit: (row: T) => void; // Optional: Edit row handler
-  onDelete: (row: T) => void; // Optional: Delete row handler
-  //handle open modal
+interface TableProductProps {
+  pageSizeOptions?: number[];
   onOpen: () => void;
 }
 
-export default function Table<T>({
-  data,
-  columns,
-  pageSizeOptions = [5, 10, 20],
-  onEdit,
-  onDelete,
+const columnHelper = createColumnHelper<Book>();
+
+export default function TableProduct({
   onOpen,
-}: TableProps<T>) {
+}: TableProductProps) {
+  const [data, setData] = React.useState<Book[]>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [dropdownId, setDropdownId] = React.useState<string | null>(null);
+  const [page, setPage] = React.useState(1);
+  const [totalPages, setTotalPages] = React.useState(0);
+  const [totalItems, setTotalItems] = React.useState(0);
+  const pageSize = 5; // Set page size here or use from props
 
-  const onToggleDropdown = (dropdownId: string) => {
-    setDropdownId((prevDropdownId) => (prevDropdownId === dropdownId ? null : dropdownId));
+  const columns = [
+    columnHelper.accessor('id', {
+      header: 'ID',
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor('title', {
+      header: 'Title',
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor('description', {
+      header: 'Description',
+      cell: (info) => <i>{info.getValue()}</i>,
+    }),
+    columnHelper.accessor('category', {
+      header: 'Category',
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor('trending', {
+      header: 'Trending',
+      cell: (info) => (info.getValue() ? 'Yes' : 'No'),
+    }),
+    columnHelper.accessor('cover_image', {
+      header: 'Cover Image',
+      cell: (info) => <img src={info.getValue()} alt="cover" className="w-14 h-24 object-cover" />,
+    }),
+    columnHelper.accessor('old_price', {
+      header: 'Old Price',
+      cell: (info) => `$${info.getValue()}`,
+    }),
+    columnHelper.accessor('new_price', {
+      header: 'New Price',
+      cell: (info) => `$${info.getValue()}`,
+    }),
+  ];
+
+  // const onEdit = (book: Book) => {
+  //   console.log('Edit:', book);
+  // };
+
+  // const onDelete = (book: Book) => {
+  //   console.log('Delete:', book);
+  // };
+
+  const onPrevious = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
   };
 
-  const closeDropdown = () => {
-    setDropdownId(null);
+  const onNext = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+    }
   };
 
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const response = await BookService.getBooks(page, pageSize);
+        setData(response.data);
+        setTotalPages(response.total_pages); // Update total pages from response
+        setTotalItems(response.total_items); // Update total items from response
+        console.log(response);
+      } catch (error) {
+        console.log('Failed to fetch book details:', error);
+      }
+    };
+    fetchBooks();
+  }, [page]);
 
   const table = useReactTable({
     data,
@@ -51,14 +111,14 @@ export default function Table<T>({
     getPaginationRowModel: getPaginationRowModel(),
     initialState: {
       pagination: {
-        pageSize: pageSizeOptions[0],
+        pageSize: pageSize,
       },
     },
   });
 
   return (
-    <div className="p-4" onClick={closeDropdown}>
-      <div className="shadow-md sm:rounded-lg bg-gray-900 relative">
+    <div className="p-4">
+      <div className="shadow-md sm:rounded-lg bg-gray-900">
         <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
           <div className="w-full md:w-1/2">
             <form className="flex items-center">
@@ -75,8 +135,8 @@ export default function Table<T>({
           </div>
           <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
             <button
-            onClick={onOpen}
-            type="button" className="flex items-center justify-center text-white bg-blue-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 bg-primary-600 focus:outline-none focus:ring-primary-800">
+              onClick={onOpen}
+              type="button" className="flex items-center justify-center text-white bg-blue-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 bg-primary-600 focus:outline-none focus:ring-primary-800">
               <svg className="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path clipRule="evenodd" fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
               </svg>
@@ -108,7 +168,6 @@ export default function Table<T>({
                       </div>
                     </th>
                   ))}
-                  <th className="px-6 py-3 text-right uppercase">actions</th>
                 </tr>
               ))}
             </thead>
@@ -120,48 +179,6 @@ export default function Table<T>({
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                   ))}
-                  {/* {onEdit && onDelete && (
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                       <button
-                        onClick={() => onEdit(row.original)}
-                        className="text-indigo-600 hover:text-indigo-900">
-                        Edit
-                        </button>
-                      <button onClick={() => onDelete(row.original)} className="text-red-600 hover:text-red-900">
-                        Delete
-                      </button>
-                    </td>
-                  )} */}
-                  <td className="px-4 py-3 flex items-center justify-end"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <button
-                      onClick={() => onToggleDropdown(row.id)}
-                      id={`items-dropdown-button-${row.id}`} data-dropdown-toggle={`items-dropdown-button-${row.id}`} className="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" type="button">
-                      <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                      </svg>
-                    </button>
-                    <div id={`items-dropdown-${row.id}`} data-dropdown={`items-dropdown-button-${row.id}`} className={`${dropdownId === row.id ? '' : 'hidden'} absolute right-10 z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600`} aria-labelledby={`items-dropdown-button-${row.id}`}>
-                      <ul className="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="apple-imac-27-dropdown-button">
-                        <li>
-                          <a
-                            href="#"
-                            onClick={() => onEdit(row.original)}
-                            className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
-                        </li>
-
-                        <li>
-                          <a href="#"
-                            onClick={() => onDelete(row.original)}
-                            className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Delete</a>
-                        </li>
-                      </ul>
-                      {/* <div className="py-1">
-                        <a href="#" className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
-                      </div> */}
-                    </div>
-                  </td>
                 </tr>
               ))}
             </tbody>
@@ -171,31 +188,32 @@ export default function Table<T>({
           <span className="text-sm font-normal text-gray-400">
             Showing{' '}
             <span className="font-semibold text-white">
-              {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}
+              {((page - 1) * pageSize) + 1}
+            </span>{' '}
+            to{' '}
+            <span className="font-semibold text-white">
+              {Math.min(page * pageSize, totalItems)}
             </span>{' '}
             of{' '}
             <span className="font-semibold text-white">
-              {Math.min(
-                (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
-                table.getPrePaginationRowModel().rows.length
-              )}
+              {totalItems}
             </span>
           </span>
           <ul className="inline-flex item-stretch -space-x-px text-white">
             <li>
               <button
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
+                onClick={onPrevious}
+                disabled={page <= 1}
                 className="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
                 {'<'}
               </button>
             </li>
-            {Array.from({ length: table.getPageCount() }, (_, i) => (
+            {Array.from({ length: totalPages }, (_, i) => (
               <li key={i}>
                 <button
-                  onClick={() => table.setPageIndex(i)}
-                  className={`flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${i === table.getState().pagination.pageIndex ? 'bg-gray-700 text-white' : ''
+                  onClick={() => setPage(i + 1)}
+                  className={`flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${i + 1 === page ? 'bg-gray-700 text-white' : ''
                     }`}
                 >
                   {i + 1}
@@ -204,8 +222,8 @@ export default function Table<T>({
             ))}
             <li>
               <button
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
+                onClick={onNext}
+                disabled={page >= totalPages}
                 className="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
                 {'>'}

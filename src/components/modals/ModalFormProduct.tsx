@@ -3,12 +3,12 @@ import React from 'react'
 interface ModalFormProductProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: () => void;
     children?: React.ReactNode;
+    onSubmit: (e: React.FormEvent) => void;
 }
 function ModalFormProduct({ isOpen, onClose, onSubmit, children }: ModalFormProductProps) {
     return (
-        <div id="crud-modal" tabIndex={-1} aria-hidden="true" className={`fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75 ${isOpen ? '' : 'hidden'}`}>
+        <div id="crud-modal" tabIndex={-1} aria-hidden="true" className={`overflow-y-scroll absolute inset-0 z-50 flex items-center justify-center md:bg-gray-800 md:bg-opacity-75 ${isOpen ? '' : 'hidden'}`}>
             <div className="relative p-4 w-full max-w-md max-h-full">
                 <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                     <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
@@ -24,9 +24,10 @@ function ModalFormProduct({ isOpen, onClose, onSubmit, children }: ModalFormProd
                             <span className="sr-only">Close modal</span>
                         </button>
                     </div>
-                    <form className="p-4 md:p-5" onSubmit={onSubmit}>
+                    <form className="p-4 md:p-5" action="#" onSubmit={onSubmit} encType='multipart/form-data'>
                         {children}
-                        <button type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <button
+                            type="submit" className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             <svg className="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path></svg>
                             Add new product
                         </button>

@@ -11,6 +11,7 @@ const useBooks = (page: number, pageSize: number) => {
     try {
       const response = await BookService.getBooks(page, pageSize);
       setBooks(response);
+      console.log(response)
     } catch (error) {
       if (error instanceof Error) {
         setError(`Failed to fetch book details: ${error.message}`);

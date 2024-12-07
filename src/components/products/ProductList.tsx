@@ -26,7 +26,7 @@ function ProductList() {
 
       {/* Pagination Navigation */}
       {totalItems && totalPages && page && (
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center my-4">
           <button onClick={() => setPages(pages - 1)} disabled={pages === 1} className="px-4 py-2 mx-1 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-gray-100">Previous</button>
           <span className="px-4 py-2 mx-1 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-gray-100">{page} of {totalPages}</span>
           <span className="px-4 py-2 mx-1 text-sm font-medium text-gray-700 bg-gray-200 rounded-lg dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-gray-100">Total Items: {totalItems}</span>

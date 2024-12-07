@@ -5,6 +5,10 @@ import { Book, BookResponse } from "../@types/book";
 type BookDetailResponse = {
     data: Book;
     status: boolean;
+    page: number;
+    page_size: number;
+    total_items: number;
+    total_pages: number;
 };
 
 class BookService {
@@ -25,6 +29,19 @@ class BookService {
         } catch (error) {
             console.error("Failed to fetch book")
             throw new Error("Failed to fetch book")
+        }
+    }
+
+    static async createBook(book: FormData) {
+        try {
+            const response = await Api.post('/books', book, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Failed to create book")
         }
     }
 }

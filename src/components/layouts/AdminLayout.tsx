@@ -24,7 +24,7 @@ function AdminLayout() {
           </div>
         </aside>
 
-        <div className="p-4 sm:ml-64 min-h-screen overflow-hidden">
+        <div className="p-4 sm:ml-64 min-h-screen overflow-hidden relative">
           {/* <Breadcrumbs routes={routes} /> */}
           <Outlet />
         </div>
