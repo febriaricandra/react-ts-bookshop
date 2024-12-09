@@ -30,9 +30,9 @@ const DropdownItem = ({ route }: { route: Route }) => {
         <li>
             <Link
                 to={route.path || '#'}
-                className="flex items-center p-2 text-gray-700 rounded-lg dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
+                className="flex items-center p-2 rounded-lg text-gray-300 hover:bg-gray-100 hover:bg-gray-600"
             >
-                {Icon && <Icon className="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" />}
+                {Icon && <Icon className="w-4 h-4 me-2 text-gray-400" />}
                 {route.name}
             </Link>
         </li>
@@ -51,14 +51,14 @@ const NavItem = ({ route }: { route: Route }) => {
     return (
         <li>
             <div
-                className="flex items-center justify-between p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center justify-between p-2 rounded-lg text-white hover:bg-gray-700 group"
                 onClick={route.children ? toggleDropdown : undefined} // Toggle only if there are children
             >
                 <Link
                     to={route.path || '#'}
                     className="flex items-center w-full"
                 >
-                    {Icon && <Icon className="w-5 h-5 text-gray-500 dark:text-gray-400" />}
+                    {Icon && <Icon className="w-5 h-5 text-gray-400" />}
                     <span className="ms-3">{route.name}</span>
                 </Link>
                 {route.children && (

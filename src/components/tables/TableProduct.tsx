@@ -62,6 +62,44 @@ export default function TableProduct({
       header: 'New Price',
       cell: (info) => `$${info.getValue()}`,
     }),
+    columnHelper.display({
+      id: 'action',
+      header: 'Action',
+      cell: (info) => (
+        <div className="flex space-x-2">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              const dropdown = document.getElementById(`dropdown-${info.row.id}`);
+              if (dropdown) {
+                dropdown.classList.toggle('hidden');
+              }
+
+              // Close other dropdowns
+              const dropdowns = document.querySelectorAll('[data-dropdown-content]');
+              dropdowns.forEach((dropdown) => {
+                if (dropdown.id !== `dropdown-${info.row.id}`) {
+                  dropdown.classList.add('hidden');
+                }
+              });
+            }}
+            id={`button-dropdown-${info.row.id}`}
+            data-dropdown-toggle={`button-dropdown-${info.row.id}`}
+            className="relative inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none text-gray-400 hover:text-gray-100" type="button">
+            <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+            </svg>
+          </button>
+          <div
+            id={`dropdown-${info.row.id}`}
+            data-dropdown-content={`dropdown-${info.row.id}`}
+            className="absolute z-10 right-8 hidden w-48 py-1 mt-4 rounded-lg shadow-lg bg-gray-700">
+            <button className="block py-2 px-4 hover:bg-gray-100 hover:bg-gray-600 hover:text-white w-full">Edit</button>
+            <button className="block py-2 px-4 hover:bg-gray-100 hover:bg-gray-600 hover:text-white w-full">Delete</button>
+          </div>
+        </div>
+      ),
+    }),
   ];
 
   // const onEdit = (book: Book) => {
@@ -83,6 +121,7 @@ export default function TableProduct({
       setPage(page + 1);
     }
   };
+
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -119,7 +158,7 @@ export default function TableProduct({
   return (
     <div className="p-4">
       <div className="shadow-md sm:rounded-lg bg-gray-900">
-        <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+        {/* <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
           <div className="w-full md:w-1/2">
             <form className="flex items-center">
               <label htmlFor="simple-search" className="sr-only">Search</label>
@@ -143,7 +182,27 @@ export default function TableProduct({
               Add product
             </button>
           </div>
-        </div>
+        </div> */}
+        <section className="flex items-center bg-gray-50 bg-gray-900">
+          <div className="w-full mx-auto">
+            <div className="relative overflow-hidden shadow-md bg-gray-800 sm:rounded-lg">
+              <div className="flex-row items-center justify-between p-4 space-y-3 sm:flex sm:space-y-0 sm:space-x-4">
+                <div>
+                  <h5 className="mr-3 font-semibold text-white">List Products</h5>
+                  <p className="text-gray-400">Manage all your products or add a new one</p>
+                </div>
+                <button
+                  onClick={onOpen}
+                  type="button" className="flex items-center justify-center text-white bg-blue-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 bg-primary-600 focus:outline-none focus:ring-primary-800">
+                  <svg className="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path clipRule="evenodd" fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
+                  </svg>
+                  Add product
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
         <div className='overflow-x-auto'>
           <table className="w-full text-sm text-left bg-gray-800 text-gray-400">
             <thead className="text-xs uppercase text-gray-400 bg-gray-700 border border-black">
@@ -204,27 +263,34 @@ export default function TableProduct({
               <button
                 onClick={onPrevious}
                 disabled={page <= 1}
-                className="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                className="flex items-center justify-center h-full py-1.5 px-3 rounded-l-lg border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
               >
                 {'<'}
               </button>
             </li>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <li key={i}>
-                <button
-                  onClick={() => setPage(i + 1)}
-                  className={`flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${i + 1 === page ? 'bg-gray-700 text-white' : ''
-                    }`}
-                >
-                  {i + 1}
-                </button>
-              </li>
-            ))}
+            {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+              const startPage = Math.max(1, page - 2); // Halaman awal
+              const pageNumber = startPage + i; // Menghitung nomor halaman
+
+              // Pastikan pageNumber tidak melebihi totalPages
+              if (pageNumber > totalPages) return null;
+
+              return (
+                <li key={pageNumber}>
+                  <button
+                    onClick={() => setPage(pageNumber)}
+                    className={`flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 :hover:text-white ${pageNumber === page ? 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-white' : ''}`}
+                  >
+                    {pageNumber}
+                  </button>
+                </li>
+              );
+            })}
             <li>
               <button
                 onClick={onNext}
                 disabled={page >= totalPages}
-                className="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                className="flex items-center justify-center h-full py-1.5 px-3 ml-0 rounded-r-lg border bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-white"
               >
                 {'>'}
               </button>

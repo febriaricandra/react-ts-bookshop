@@ -22,20 +22,20 @@ function ProductCard({ id, title, image, new_price, old_price, description }: Pr
     }
 
     return (
-        <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div className="w-full max-w-sm border border-gray-200 rounded-lg shadow border-gray-700">
             <a href={`/books/${id}`}
                 className='block max-h-52 overflow-hidden rounded-t-lg'>
                 <img className="mx-auto rounded-t-lg object-cover" src={image} alt={title} />
             </a>
             <div className="px-5 pb-5">
                 <a href="#">
-                    <h2 className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">{title}</h2>
+                    <h2 className="text-2xl font-semibold tracking-tight text-white">{title}</h2>
                 </a>
-                <p className="mt-2 mb-4 text-sm text-gray-500 dark:text-gray-300">{description}</p>
+                <p className="mt-2 mb-4 text-sm text-gray-300">{description}</p>
                 <div className="flex justify-between xl:flex-row">
                     <div className='flex items-center gap-2'>
-                        {old_price !== new_price && <span className="text-md font-bold text-gray-900 dark:text-white line-through decoration-red-500 decoration-[2px]">${old_price}</span>}
-                        <span className="text-3xl font-bold text-gray-900 dark:text-white">${new_price}</span>
+                        {old_price !== new_price && old_price > new_price && <span className="text-md font-bold text-white line-through decoration-red-500 decoration-[2px]">${old_price}</span>}
+                        <span className="text-3xl font-bold text-white">${new_price}</span>
                     </div>
                     <a
                         onClick={handleCart}

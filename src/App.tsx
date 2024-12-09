@@ -10,6 +10,7 @@ import Details from './pages/Details'
 import Carts from './pages/Carts'
 import ProtectedRoute from './components/protected/ProtectedRoute'
 import Products from './pages/admin/Products'
+import Checkout from './pages/Checkout'
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
         <Route path='/' element={<Home />} />
         <Route path='/books/:id' element={<Details />} />
         <Route path='/carts' element={<Carts />} />
+        <Route path='/checkout' element={<Checkout />} />
       </Route>
 
       {/* Admin Routes */}
