@@ -18,7 +18,7 @@ const Checkout = () => {
   // const [companyName, setCompanyName] = useState('');
   // const [vatNumber, setVatNumber] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('credit-card');
-  const [deliveryMethod] = useState('dhl');
+  // const [deliveryMethod] = useState('dhl');
   // const [voucher] = useState('');
 
   //tax 11%f

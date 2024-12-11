@@ -12,6 +12,7 @@ import ProtectedRoute from './components/protected/ProtectedRoute'
 import Products from './pages/admin/Products'
 import Checkout from './pages/Checkout'
 import Profile from './pages/user/Profile'
+import UserLayout from './components/layouts/UserLayout'
 
 export default function App() {
   return (
@@ -47,14 +48,16 @@ export default function App() {
       </Route>
 
       {/* User Route */}
-      <Route path='/profile' element={
-        <ProtectedRoute isAdmin={false}>
-          <Profile />
-        </ProtectedRoute>
-      } />
+      <Route element={<UserLayout />}>
+        <Route path='/profile' element={
+          <ProtectedRoute isAdmin={false}>
+            <Profile />
+          </ProtectedRoute>
+        } />
+
+      </Route>
 
       {/* Not Found Route */}
-
       <Route path='*' element={<div>404 Not Found</div>} />
     </Routes>
   )
