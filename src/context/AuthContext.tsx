@@ -19,6 +19,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<{ email: string, name: string, isAdmin: boolean } | null>(null);
 
+
     const login = async (email: string, password: string): Promise<User> => {
         try {
             const response = await Api.post("/login", { email, password });
@@ -46,11 +47,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     const logout = () => {
-        // Call API to logout
-        // Remove user from localStorage
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        window.location.reload();
         setUser(null);
     };
 

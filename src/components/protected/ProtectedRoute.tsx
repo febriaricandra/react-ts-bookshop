@@ -1,25 +1,35 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-export default function ProtectedRoute({ children }: any) {
+interface ProtectedRouteProps {
+    children: React.ReactNode;
+    isAdmin?: boolean;
+}
+
+export default function ProtectedRoute({ children, isAdmin }: ProtectedRouteProps) {
     const navigate = useNavigate();
-    const user = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
+    const userString = localStorage.getItem("user");
+    let user = null;
+
+    if (userString) {
+        try {
+            user = JSON.parse(userString);
+        } catch (error) {
+            console.error("Error parsing user data:", error);
+        }
+    }
 
     useEffect(() => {
-        if (!token) {
-            navigate("/login");
-        }
-    
         if (!user) {
             navigate("/login");
-        }
-    
-        if (user && !JSON.parse(user).isAdmin) {
+        } else if (isAdmin && !user.isAdmin) {
             navigate("/");
         }
-    } , [user, token, navigate]);
+    }, [user, isAdmin, navigate]);
 
+    if (!user || (isAdmin && !user.isAdmin)) {
+        return null;
+    }
 
-    return children;
+    return <>{children}</>;
 }

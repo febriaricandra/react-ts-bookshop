@@ -1,33 +1,69 @@
 import React, { useState } from 'react';
-
+import { useCart } from '../context/CartContext';
+import OrderService from '../services/OrderService';
+import { useFlashMessage } from '../context/FlashMessageContext';
+import { useNavigate } from 'react-router-dom';
+import NotFound from '../components/errors/NotFound';
 const Checkout = () => {
+  const { cart, totalPrice, clearCart } = useCart();
+  const { showMessage } = useFlashMessage();
+  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [country, setCountry] = useState('United States');
   const [city, setCity] = useState('San Francisco');
+  const [state, setState] = useState('');
+  const [zipcode, setZipcode] = useState('');
   const [phone, setPhone] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  const [vatNumber, setVatNumber] = useState('');
+  // const [companyName, setCompanyName] = useState('');
+  // const [vatNumber, setVatNumber] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('credit-card');
   const [deliveryMethod] = useState('dhl');
-  const [voucher] = useState('');
+  // const [voucher] = useState('');
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //tax 11%f
+  const tax = 0.11;
+  const totalTax = cart.reduce((acc, item) => acc + item.price, 0) * tax;
+
+  const orderSummary = cart.reduce((acc, item) => acc + item.price, 0) + totalTax;
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log({
-      name,
-      email,
-      country,
-      city,
-      phone,
-      companyName,
-      vatNumber,
-      paymentMethod,
-      deliveryMethod,
-      voucher,
-    });
+    try {
+      const orderRequest = {
+        name,
+        email,
+        address: {
+          city,
+          country,
+          state,
+          zipcode,
+        },
+        phone,
+        total_price: cart.reduce((acc, item) => acc + item.price, 0),
+        book_ids: cart.map((item) => item.id),
+      }
+
+      const response = await OrderService.createOrder(orderRequest);
+      console.log(response);
+      if (response) {
+        showMessage('Order created successfully', 'success');
+        clearCart();
+        navigate('/');
+      }
+    } catch (error) {
+      showMessage('Failed to create order', 'error');
+      console.error("Failed to create order")
+      throw new Error("Failed to create order")
+    }
   };
+
+  if (cart.length === 0) {
+    return (
+      <NotFound />
+    )
+  }
+
 
   return (
     <section className="py-8 antialiased bg-gray-800 md:py-16">
@@ -83,6 +119,32 @@ const Checkout = () => {
                 </div>
 
                 <div>
+                  <label htmlFor="state-input-3" className="mb-2 block text-sm font-medium text-white"> State* </label>
+                  <input
+                    type="text"
+                    id="state-input-3"
+                    value={state}
+                    onChange={(e) => setState(e.target.value)}
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    placeholder="California"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="zipcode-input-3" className="mb-2 block text-sm font-medium text-white"> Zipcode* </label>
+                  <input
+                    type="text"
+                    id="zipcode-input-3"
+                    value={zipcode}
+                    onChange={(e) => setZipcode(e.target.value)}
+                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                    placeholder="94103"
+                    required
+                  />
+                </div>
+
+                <div>
                   <div className="mb-2 flex items-center gap-2">
                     <label htmlFor="select-city-input-3" className="block text-sm font-medium text-white"> City* </label>
                   </div>
@@ -116,32 +178,6 @@ const Checkout = () => {
                       />
                     </div>
                   </div>
-                </div>
-
-                <div>
-                  <label htmlFor="company_name" className="mb-2 block text-sm font-medium text-white"> Company name </label>
-                  <input
-                    type="text"
-                    id="company_name"
-                    value={companyName}
-                    onChange={(e) => setCompanyName(e.target.value)}
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                    placeholder="Flowbite LLC"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="vat_number" className="mb-2 block text-sm font-medium text-white"> VAT number </label>
-                  <input
-                    type="text"
-                    id="vat_number"
-                    value={vatNumber}
-                    onChange={(e) => setVatNumber(e.target.value)}
-                    className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                    placeholder="DE42313253"
-                    required
-                  />
                 </div>
               </div>
             </div>
@@ -217,7 +253,7 @@ const Checkout = () => {
               <h3 className="text-xl font-semibold text-white">Delivery Methods</h3>
 
               <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              <div className="rounded-lg border p-4 ps-4 border-gray-700 bg-gray-800">
+                <div className="rounded-lg border p-4 ps-4 border-gray-700 bg-gray-800">
                   <div className="flex items-start">
                     <div className="flex h-5 items-center">
                       <input
@@ -286,17 +322,17 @@ const Checkout = () => {
               <div className="-my-3 divide-y divide-gray-800">
                 <dl className="flex items-center justify-between gap-4 py-3">
                   <dt className="text-base text-gray-200 font-medium">Subtotal</dt>
-                  <dd className="text-base font-medium text-white">$8,094.00</dd>
+                  <dd className="text-base font-medium text-white">{totalPrice}</dd>
                 </dl>
 
                 <dl className="flex items-center justify-between gap-4 py-3">
                   <dt className="text-base text-gray-200 font-medium">Tax</dt>
-                  <dd className="text-base font-medium text-white">$199</dd>
+                  <dd className="text-base font-medium text-white">{totalTax.toFixed(2)}</dd>
                 </dl>
 
                 <dl className="flex items-center justify-between gap-4 py-3">
                   <dt className="text-base font-bold text-white">Total</dt>
-                  <dd className="text-base font-bold text-white">$8,392.00</dd>
+                  <dd className="text-base font-bold text-white">{orderSummary.toFixed(2)}</dd>
                 </dl>
               </div>
             </div>

@@ -11,6 +11,7 @@ import Carts from './pages/Carts'
 import ProtectedRoute from './components/protected/ProtectedRoute'
 import Products from './pages/admin/Products'
 import Checkout from './pages/Checkout'
+import Profile from './pages/user/Profile'
 
 export default function App() {
   return (
@@ -33,17 +34,24 @@ export default function App() {
       {/* Admin Routes */}
       <Route element={<AdminLayout />}>
         <Route path='/admin' element={
-          <ProtectedRoute>
+          <ProtectedRoute isAdmin={true}>
             <AdminHome />
           </ProtectedRoute>
         } />
 
         <Route path='/products/all' element={
-          <ProtectedRoute>
+          <ProtectedRoute isAdmin={true}>
             <Products />
           </ProtectedRoute>
         } />
       </Route>
+
+      {/* User Route */}
+      <Route path='/profile' element={
+        <ProtectedRoute isAdmin={false}>
+          <Profile />
+        </ProtectedRoute>
+      } />
 
       {/* Not Found Route */}
 

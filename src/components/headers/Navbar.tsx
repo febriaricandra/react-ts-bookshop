@@ -6,7 +6,7 @@ import { useCart } from "../../context/CartContext";
 function Navbar() {
     const { logout } = useAuth();
     const { cart } = useCart();
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const user = JSON.parse(localStorage.getItem('user') as string) || null;
     const onToggleAccount = () => {
         const dropdown = document.getElementById('user-dropdown');
         if (dropdown) {
@@ -81,7 +81,7 @@ function Navbar() {
                                         <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
                                     </button>
 
-                                    <div className="z-50 absolute top-10 hidden text-base list-none divide-y rounded-lg shadow bg-gray-700 divide-gray-600" id="user-dropdown">
+                                    <div className="z-50 absolute top-10 right-0 hidden text-base list-none divide-y rounded-lg shadow bg-gray-700 divide-gray-600" id="user-dropdown">
                                         <div className="px-4 py-3">
                                             <span className="block text-sm text-white uppercase">
                                                 {user.name}
