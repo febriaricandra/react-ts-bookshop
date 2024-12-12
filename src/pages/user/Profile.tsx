@@ -6,7 +6,7 @@ function Profile() {
 
     console.log(user);
     return (
-        <div className="min-h-screen bg-[#0f1629] text-gray-200 p-8">
+        <div className="min-h-screen text-gray-200 p-8">
             {/* Header Section */}
             <div className="flex items-start gap-4 mb-8">
                 <img

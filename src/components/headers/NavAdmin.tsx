@@ -1,8 +1,16 @@
 import { useAuth } from '../../context/AuthContext';
-
+import { useFlashMessage } from '../../context/FlashMessageContext';
+import { useNavigate } from 'react-router-dom';
 function NavAdmin({ onToggleSidebar }: { onToggleSidebar: () => void }) {
 
     const { logout } = useAuth();
+    const { showMessage }: any = useFlashMessage();
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        showMessage("You have been logged out", "success");
+        navigate("/");
+        logout();
+    }
     const onToggleAccount = () => {
         const dropdown = document.getElementById('user-dropdown');
         if (dropdown) {
@@ -40,9 +48,9 @@ function NavAdmin({ onToggleSidebar }: { onToggleSidebar: () => void }) {
                                 <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Earnings</a>
                             </li>
                             <li>
-                                <a
-                                    onClick={logout}
-                                    href="#" className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Sign out</a>
+                                <button
+                                    onClick={handleLogout}
+                                    className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white w-full text-left">Sign out</button>
                             </li>
                         </ul>
                     </div>

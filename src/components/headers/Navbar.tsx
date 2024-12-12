@@ -2,8 +2,12 @@ import { Link } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext";
 import { SquareUser } from "lucide-react";
 import { useCart } from "../../context/CartContext";
+import { useFlashMessage } from "../../context/FlashMessageContext";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
+    const { showMessage } = useFlashMessage();
+    const navigate = useNavigate();
     const { logout } = useAuth();
     const { cart } = useCart();
     const user = JSON.parse(localStorage.getItem('user') as string) || null;
@@ -12,6 +16,12 @@ function Navbar() {
         if (dropdown) {
             dropdown.classList.toggle('hidden');
         }
+    }
+
+    const handleLogout = () => {
+        showMessage("You have been logged out", "success");
+        navigate("/");
+        logout();
     }
     return (
         <nav className="bg-gray-900 antialiased mb-2">
@@ -101,9 +111,9 @@ function Navbar() {
                                                 <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Earnings</a>
                                             </li>
                                             <li>
-                                                <a
-                                                    onClick={logout}
-                                                    href="#" className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Sign out</a>
+                                                <button
+                                                    onClick={handleLogout}
+                                                    className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Sign out</button>
                                             </li>
                                         </ul>
                                     </div>

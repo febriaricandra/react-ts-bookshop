@@ -13,6 +13,7 @@ import Products from './pages/admin/Products'
 import Checkout from './pages/Checkout'
 import Profile from './pages/user/Profile'
 import UserLayout from './components/layouts/UserLayout'
+import Overview from './pages/user/Overview'
 
 export default function App() {
   return (
@@ -54,7 +55,11 @@ export default function App() {
             <Profile />
           </ProtectedRoute>
         } />
-
+        <Route path='/overviews' element={
+          <ProtectedRoute isAdmin={false}>
+            <Overview />
+          </ProtectedRoute>
+        } />
       </Route>
 
       {/* Not Found Route */}
