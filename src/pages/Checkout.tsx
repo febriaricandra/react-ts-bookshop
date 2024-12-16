@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import NotFound from '../components/errors/NotFound';
 const Checkout = () => {
   const { cart, totalPrice, clearCart } = useCart();
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   const { showMessage } = useFlashMessage();
   const navigate = useNavigate();
   const [name, setName] = useState('');
@@ -42,6 +43,7 @@ const Checkout = () => {
         phone,
         total_price: cart.reduce((acc, item) => acc + item.price, 0),
         book_ids: cart.map((item) => item.id),
+        user_id: user.id,
       }
 
       const response = await OrderService.createOrder(orderRequest);

@@ -9,23 +9,12 @@ export const routes: Route[] = [
     {
         name: 'Dashboard',
         icon: 'home',
-        path: '/dashboard',
+        path: '/admin',
     },
     {
         name: 'Orders',
         icon: 'shopping-cart',
-        children: [
-            {
-                name: 'Pending Orders',
-                icon: 'clock',
-                path: '/orders/pending',
-            },
-            {
-                name: 'Completed Orders',
-                icon: 'check',
-                path: '/orders/completed',
-            },
-        ],
+        path: '/orders',
     },
     {
         name: 'Products',
@@ -33,14 +22,9 @@ export const routes: Route[] = [
         children: [
             {
                 name: 'All Products',
-                icon: 'clock',
+                icon: 'check',
                 path: '/products/all',
             },
-            {
-                name: 'Best Sellers',
-                icon: 'check',
-                path: '/products/best-sellers',
-            }
         ]
     },
     {

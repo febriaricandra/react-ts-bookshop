@@ -14,6 +14,7 @@ import Checkout from './pages/Checkout'
 import Profile from './pages/user/Profile'
 import UserLayout from './components/layouts/UserLayout'
 import Overview from './pages/user/Overview'
+import Orders from './pages/admin/Orders'
 
 export default function App() {
   return (
@@ -44,6 +45,12 @@ export default function App() {
         <Route path='/products/all' element={
           <ProtectedRoute isAdmin={true}>
             <Products />
+          </ProtectedRoute>
+        } />
+
+        <Route path='/orders' element={
+          <ProtectedRoute isAdmin={true}>
+            <Orders />
           </ProtectedRoute>
         } />
       </Route>

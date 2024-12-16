@@ -38,8 +38,16 @@ type OrderResponse = {
     phone: string;
     total_price: number;
     user_id: number;
-    books: any; 
+    book_ids: number[]; 
     user: User;
+}
+
+type Data = {
+    data: OrderResponse[];
+    page: number;
+    total_pages: number;
+    total_items: number;
+    status: boolean;
 }
 
 class OrderService {
@@ -50,6 +58,16 @@ class OrderService {
         } catch (error) {
             console.error("Failed to create order")
             throw new Error("Failed to create order")
+        }
+    }
+
+    static async getOrders(page: number, pageSize: number): Promise<Data> {
+        try {
+            const response = await Api.get<Data>(`/orders?page=${page}&page_size=${pageSize}`);
+            return response.data;
+        } catch (error) {
+            console.error("Failed to fetch orders")
+            throw new Error("Failed to fetch orders")
         }
     }
 }
