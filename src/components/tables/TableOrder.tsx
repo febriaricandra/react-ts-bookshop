@@ -16,7 +16,7 @@ import { useEffect } from 'react';
 const columnHelper = createColumnHelper<Order>();
 
 export default function TableProduct() {
-  const [data, setData] = React.useState<Order[]>([]);
+  const [data, setData] = React.useState<Order[]>([] as Order[]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [page, setPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(0);

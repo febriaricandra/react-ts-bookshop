@@ -27,6 +27,25 @@ type OrderRequestBody = {
     book_ids: number[];
 }
 
+interface Book {
+    id: number;
+    title: string;
+    author: string;
+    new_price: number;
+    old_price: number;
+    cover_image: string;
+}
+
+export type Order = {
+    id: number;
+    name: string;
+    email: string;
+    address: Address;
+    phone: string;
+    total_price: number;
+    book_ids: number[];
+}
+
 type OrderResponse = {
     id: number;
     created_at: string;
@@ -38,17 +57,9 @@ type OrderResponse = {
     phone: string;
     total_price: number;
     user_id: number;
-    book_ids: number[]; 
     user: User;
-}
-
-type Data = {
-    data: OrderResponse[];
-    page: number;
-    total_pages: number;
-    total_items: number;
-    status: boolean;
-}
+    books: Book[]; // This should match the structure of the response
+};
 
 class OrderService {
     static async createOrder(order: OrderRequestBody): Promise<OrderResponse> {
@@ -61,9 +72,9 @@ class OrderService {
         }
     }
 
-    static async getOrders(page: number, pageSize: number): Promise<Data> {
+    static async getOrders(page: number, pageSize: number) {
         try {
-            const response = await Api.get<Data>(`/orders?page=${page}&page_size=${pageSize}`);
+            const response = await Api.get(`/orders?page=${page}&page_size=${pageSize}`);
             return response.data;
         } catch (error) {
             console.error("Failed to fetch orders")
@@ -71,9 +82,9 @@ class OrderService {
         }
     }
 
-    static async getOrdersById(id: number): Promise<OrderResponse> {
+    static async getOrdersById(id: number) {
         try {
-            const response = await Api.get<OrderResponse>(`/orders/${id}`);
+            const response = await Api.get(`/orders/${id}`);
             return response.data;
         } catch (error) {
             console.error("Failed to fetch order")

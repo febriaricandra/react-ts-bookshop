@@ -64,10 +64,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({ isOpen, onClose, id
 
         }
         fetchOrderDetail();
-    }, [isOpen]);
-
-    console.log(order);
-
+    }, [id, isOpen])
 
     return (
         <div className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-60 flex items-center justify-center overflow-hidden">

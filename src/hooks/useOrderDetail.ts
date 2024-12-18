@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import {useState, useEffect } from "react";
 import OrderService from "../services/OrderService";
 import { Order } from "../@types/orders";
 
@@ -10,7 +10,7 @@ const useOrderDetail = (id: number) => {
   const fetchOrderDetail = async (id: number) => {
     try {
       const response = await OrderService.getOrdersById(id);
-      setOrder(response);
+      setOrder(response.data);
     } catch (err) {
       if (err instanceof Error) {
         setError(`Failed to fetch order details: ${err.message}`);
