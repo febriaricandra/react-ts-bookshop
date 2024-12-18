@@ -70,6 +70,16 @@ class OrderService {
             throw new Error("Failed to fetch orders")
         }
     }
+
+    static async getOrdersById(id: number): Promise<OrderResponse> {
+        try {
+            const response = await Api.get<OrderResponse>(`/orders/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error("Failed to fetch order")
+            throw new Error("Failed to fetch order")
+        }
+    }
 }
 
 export default OrderService;

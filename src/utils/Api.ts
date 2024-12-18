@@ -27,8 +27,18 @@ Api.interceptors.response.use(
         return response;
     },
     (error) => {
-        if (error.response && error.response.status === 401) {
-            localStorage.removeItem("token");
+        if (error.response) {
+            const { status } = error.response;
+            switch (status) {
+                case 401:
+                    localStorage.removeItem("token");
+                    window.location.href = "/login";
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            console.log(error);
         }
         return Promise.reject(error);
     }

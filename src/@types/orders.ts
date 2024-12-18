@@ -6,6 +6,7 @@ type Address = {
 }
 
 export type Order = {
+    id: number;
     name: string;
     email: string;
     address: Address;

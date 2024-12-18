@@ -10,6 +10,7 @@ import {
 } from '@tanstack/react-table';
 import { Order } from '../../@types/orders';
 import OrderService from '../../services/OrderService';
+import ModalDetailOrder from '../modals/ModalDetailOrder';
 import { useEffect } from 'react';
 
 const columnHelper = createColumnHelper<Order>();
@@ -20,7 +21,15 @@ export default function TableProduct() {
   const [page, setPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(0);
   const [totalItems, setTotalItems] = React.useState(0);
+  const [selectedOrder, setSelectedOrder] = React.useState<number>(0);
+  const [open, setOpen] = React.useState(false);
   const pageSize = 5; // Set page size here or use from props
+
+  const handleOpenModal = (id: number) => {
+    setOpen(true);
+    setSelectedOrder(id);
+    console.log(id);
+  }
 
   const columns = [
     columnHelper.accessor('name', {
@@ -56,26 +65,11 @@ export default function TableProduct() {
       cell: (info) => (
         <div className="flex space-x-2">
           <button
-            onClick={(e) => {
-              e.stopPropagation();
-              const dropdown = document.getElementById(`dropdown-${info.row.id}`);
-              if (dropdown) {
-                dropdown.classList.toggle('hidden');
-              }
-
-              // Close other dropdowns
-              const dropdowns = document.querySelectorAll('[data-dropdown-content]');
-              dropdowns.forEach((dropdown) => {
-                if (dropdown.id !== `dropdown-${info.row.id}`) {
-                  dropdown.classList.add('hidden');
-                }
-              });
-            }}
-            id={`button-dropdown-${info.row.id}`}
-            data-dropdown-toggle={`button-dropdown-${info.row.id}`}
+            onClick={() => handleOpenModal(info.row.original.id)}
             className="relative inline-flex items-center p-0.5 text-sm font-medium text-center text-white hover:text-gray-800 rounded-lg focus:outline-none text-gray-400 hover:text-gray-100" type="button">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" /><circle cx="12" cy="12" r="3" /></svg>
           </button>
+          <ModalDetailOrder id={selectedOrder} isOpen={open} onClose={() => setOpen(false)} />
         </div>
       ),
     }),
