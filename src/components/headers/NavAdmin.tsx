@@ -1,8 +1,9 @@
 import { useAuth } from '../../context/AuthContext';
 import { useFlashMessage } from '../../context/FlashMessageContext';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 function NavAdmin({ onToggleSidebar }: { onToggleSidebar: () => void }) {
-
+    const user = JSON.parse(localStorage.getItem('user') as string) || null;
     const { logout } = useAuth();
     const { showMessage }: any = useFlashMessage();
     const navigate = useNavigate();
@@ -34,18 +35,12 @@ function NavAdmin({ onToggleSidebar }: { onToggleSidebar: () => void }) {
 
                     <div className="z-50 absolute right-4 top-14 hidden text-base list-none divide-y rounded-lg shadow bg-gray-700 divide-gray-600" id="user-dropdown">
                         <div className="px-4 py-3">
-                            <span className="block text-sm text-white">Bonnie Green</span>
-                            <span className="block text-sm truncate text-gray-400">name@flowbite.com</span>
+                            <span className="block text-sm text-white">{user.name}</span>
+                            <span className="block text-sm truncate text-gray-400">{user.email}</span>
                         </div>
                         <ul className="py-2" aria-labelledby="user-menu-button">
                             <li>
-                                <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Dashboard</a>
-                            </li>
-                            <li>
-                                <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Settings</a>
-                            </li>
-                            <li>
-                                <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Earnings</a>
+                                <Link to="/" className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Homepage</Link>
                             </li>
                             <li>
                                 <button

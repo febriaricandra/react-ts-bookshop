@@ -1,14 +1,16 @@
 import { Outlet } from 'react-router-dom';
 import { useState } from 'react';
-import { CircleUser, ShoppingBag, ChevronDown, ChartNoAxesGantt } from 'lucide-react';
+import { CircleUser, ShoppingBag, ChevronDown, ChartNoAxesGantt,House } from 'lucide-react';
 import SideNavProfile from '../sidebars/SideNavProfile';
 
 function UserLayout() {
     const data = [
+        { icon: House, label: 'Homepage', link: '/' },
         { icon: ChartNoAxesGantt, label: 'Overview', link: '/overviews' },
         { icon: CircleUser, label: 'Profile', link: '/profile' },
         { icon: ShoppingBag, label: 'Orders', link: '/Order' },
     ]
+    const user = JSON.parse(localStorage.getItem('user') as string) || null;
 
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const toggleSidebar = () => {
@@ -23,11 +25,13 @@ function UserLayout() {
                 <div className="flex items-center justify-between mb-6 p-2 ">
                     <div className="flex items-center gap-3">
                         <div className="h-10 w-10 rounded-full bg-slate-700 flex items-center justify-center">
-                            <span className="text-lg font-semibold">JL</span>
+                            <span className="text-lg font-semibold">
+                                {user.name.charAt(0)}
+                            </span>
                         </div>
                         <div>
-                            <h2 className="font-semibold">Jese Leos (Personal)</h2>
-                            <p className="text-sm text-slate-400">jese@flowbite.com</p>
+                            <h2 className="font-semibold">{user.name}</h2>
+                            <p className="text-sm text-slate-400">{user.email}</p>
                         </div>
                     </div>
                     <button

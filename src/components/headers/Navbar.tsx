@@ -34,34 +34,6 @@ function Navbar() {
                                 <img className="w-auto h-8 block" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/logo-full-dark.svg" alt="" />
                             </Link>
                         </div>
-
-                        {/* <ul className="hidden lg:flex items-center justify-start gap-6 md:gap-8 py-3 sm:justify-center">
-                            <li>
-                                <a href="#" title="" className="flex text-sm font-medium text-gray-900 hover:text-primary-700 text-white hover:text-primary-500">
-                                    Home
-                                </a>
-                            </li>
-                            <li className="shrink-0">
-                                <a href="#" title="" className="flex text-sm font-medium text-gray-900 hover:text-primary-700 text-white hover:text-primary-500">
-                                    Best Sellers
-                                </a>
-                            </li>
-                            <li className="shrink-0">
-                                <a href="#" title="" className="flex text-sm font-medium text-gray-900 hover:text-primary-700 text-white hover:text-primary-500">
-                                    Gift Ideas
-                                </a>
-                            </li>
-                            <li className="shrink-0">
-                                <a href="#" title="" className="text-sm font-medium text-gray-900 hover:text-primary-700 text-white hover:text-primary-500">
-                                    Today's Deals
-                                </a>
-                            </li>
-                            <li className="shrink-0">
-                                <a href="#" title="" className="text-sm font-medium text-gray-900 hover:text-primary-700 text-white hover:text-primary-500">
-                                    Sell
-                                </a>
-                            </li>
-                        </ul> */}
                     </div>
 
                     <div className="flex flex-row gap-2 relative">
@@ -91,32 +63,52 @@ function Navbar() {
                                         <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
                                     </button>
 
-                                    <div className="z-50 absolute top-10 right-0 hidden text-base list-none divide-y rounded-lg shadow bg-gray-700 divide-gray-600" id="user-dropdown">
-                                        <div className="px-4 py-3">
-                                            <span className="block text-sm text-white uppercase">
-                                                {user.name}
-                                            </span>
-                                            <span className="block text-sm truncate text-gray-400">
-                                                {user.email}
-                                            </span>
+                                    {user.isAdmin ? (
+                                        <div className="z-50 absolute top-10 right-0 hidden text-base list-none divide-y rounded-lg shadow bg-gray-700 divide-gray-600" id="user-dropdown">
+                                            <div className="px-4 py-3">
+                                                <span className="block text-sm text-white uppercase">
+                                                    {user.name}
+                                                </span>
+                                                <span className="block text-sm truncate text-gray-400">
+                                                    {user.email}
+                                                </span>
+                                            </div>
+                                            <ul className="py-2" aria-labelledby="user-menu-button">
+                                                <li>
+                                                    <Link to="/admin" className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Dashboard</Link>
+                                                </li>
+                                                <li>
+                                                    <button
+                                                        onClick={handleLogout}
+                                                        className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white w-full text-left">Sign out</button>
+                                                </li>
+                                            </ul>
                                         </div>
-                                        <ul className="py-2" aria-labelledby="user-menu-button">
-                                            <li>
-                                                <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Dashboard</a>
-                                            </li>
-                                            <li>
-                                                <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Settings</a>
-                                            </li>
-                                            <li>
-                                                <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Earnings</a>
-                                            </li>
-                                            <li>
-                                                <button
-                                                    onClick={handleLogout}
-                                                    className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white w-full text-left">Sign out</button>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    ) : (
+                                        <div className="z-50 absolute top-10 right-0 hidden text-base list-none divide-y rounded-lg shadow bg-gray-700 divide-gray-600" id="user-dropdown">
+                                            <div className="px-4 py-3">
+                                                <span className="block text-sm text-white uppercase">
+                                                    {user.name}
+                                                </span>
+                                                <span className="block text-sm truncate text-gray-400">
+                                                    {user.email}
+                                                </span>
+                                            </div>
+                                            <ul className="py-2" aria-labelledby="user-menu-button">
+                                                <li>
+                                                    <Link to="/profile" className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Profile</Link>
+                                                </li>
+                                                <li>
+                                                    <Link to="/overviews" className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Overview</Link>
+                                                </li>
+                                                <li>
+                                                    <button
+                                                        onClick={handleLogout}
+                                                        className="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white w-full text-left">Sign out</button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    )}
                                 </>
                             ) : (
                                 <div className="flex items-center space-x-2 hover:bg-gray-100 hover:bg-gray-700 p-2 rounded-lg">

@@ -91,6 +91,16 @@ class OrderService {
             throw new Error("Failed to fetch order")
         }
     }
+
+    static async getUserOrders() {
+        try {
+            const response = await Api.get('/user-orders');
+            return response.data;
+        } catch (error) {
+            console.error("Failed to fetch user orders")
+            throw new Error("Failed to fetch user orders")
+        }
+    }
 }
 
 export default OrderService;

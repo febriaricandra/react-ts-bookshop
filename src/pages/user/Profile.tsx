@@ -1,10 +1,10 @@
-import { ChevronDown } from "lucide-react";
-import { useAuth } from "../../context/AuthContext"
+import useOrderUser from "../../hooks/useOrderUser";
+import TableLatestOrder from "../../components/tables/TableLatestOrder";
 
 function Profile() {
-    const { user } = useAuth();
+    const { data, loading, error } = useOrderUser();
 
-    console.log(user);
+    console.log(data, loading, error);
     return (
         <div className="min-h-screen text-gray-200 p-8">
             {/* Header Section */}
@@ -67,84 +67,7 @@ function Profile() {
             </div>
 
             {/* Latest Orders */}
-            <div className="bg-[#1c2537] rounded-lg p-6">
-                <h2 className="text-lg font-semibold mb-4">Latest orders</h2>
-                <div className="overflow-x-auto">
-                    <table className="w-full">
-                        <thead>
-                            <tr className="text-sm text-gray-400">
-                                <th className="text-left pb-4">Order ID:</th>
-                                <th className="text-left pb-4">Date:</th>
-                                <th className="text-left pb-4">Price:</th>
-                                <th className="text-left pb-4">Status:</th>
-                                <th className="text-right pb-4">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="text-white">
-                            <tr className="border-b border-gray-700">
-                                <td className="py-4">#FWB12546798</td>
-                                <td>11.12.2023</td>
-                                <td>$499</td>
-                                <td>
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-900/30 text-yellow-500">
-                                        In transit
-                                    </span>
-                                </td>
-                                <td className="text-right">
-                                    <button className="text-gray-400 hover:text-white">
-                                        <ChevronDown className="w-5 h-5" />
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr className="border-b border-gray-700">
-                                <td className="py-4">#FWB12546777</td>
-                                <td>10.11.2024</td>
-                                <td>$3,287</td>
-                                <td>
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-900/30 text-red-500">
-                                        Cancelled
-                                    </span>
-                                </td>
-                                <td className="text-right">
-                                    <button className="text-gray-400 hover:text-white">
-                                        <ChevronDown className="w-5 h-5" />
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr className="border-b border-gray-700">
-                                <td className="py-4">#FWB12546846</td>
-                                <td>07.11.2024</td>
-                                <td>$111</td>
-                                <td>
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-900/30 text-green-500">
-                                        Completed
-                                    </span>
-                                </td>
-                                <td className="text-right">
-                                    <button className="text-gray-400 hover:text-white">
-                                        <ChevronDown className="w-5 h-5" />
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="py-4">#FWB12546212</td>
-                                <td>18.10.2024</td>
-                                <td>$756</td>
-                                <td>
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-900/30 text-green-500">
-                                        Completed
-                                    </span>
-                                </td>
-                                <td className="text-right">
-                                    <button className="text-gray-400 hover:text-white">
-                                        <ChevronDown className="w-5 h-5" />
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <TableLatestOrder data={data ?? []} />
         </div>
     );
 }
