@@ -13,4 +13,5 @@ export type Order = {
     phone: string;
     total_price: number;
     book_ids: number[];
+    created_at: string;
 }

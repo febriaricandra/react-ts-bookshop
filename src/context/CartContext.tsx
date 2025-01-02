@@ -21,7 +21,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider = ({ children }: { children: ReactNode }) => {
     const [cart, setCart] = useState<CartItem[]>([]);
 
-    const addToCart = (item: CartItem) => {
+    const addToCart = (item: CartItem ) => {
         if (cart.find((cartItem) => cartItem.id === item.id)) {
             return;
         }

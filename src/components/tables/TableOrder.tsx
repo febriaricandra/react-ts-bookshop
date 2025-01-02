@@ -12,6 +12,7 @@ import { Order } from '../../@types/orders';
 import OrderService from '../../services/OrderService';
 import ModalDetailOrder from '../modals/ModalDetailOrder';
 import { useEffect } from 'react';
+import { formatDate } from '../../utils/date';
 
 const columnHelper = createColumnHelper<Order>();
 
@@ -32,6 +33,10 @@ export default function TableProduct() {
   }
 
   const columns = [
+    columnHelper.accessor('created_at', {
+      header: 'Date',
+      cell: (info) => formatDate(info.getValue()),
+    }),
     columnHelper.accessor('name', {
       header: 'Name',
       cell: (info) => info.getValue(),

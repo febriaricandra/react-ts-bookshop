@@ -24,12 +24,12 @@ function AdminLayout() {
           </div>
         </aside>
 
-        <div className="p-4 mb-20 z-1 sm:ml-64 min-h-screen overflow-hidden relative">
+        <div className="p-4 z-1 sm:ml-64 min-h-screen overflow-hidden relative">
           {/* <Breadcrumbs routes={routes} /> */}
           <Outlet />
         </div>
       </main>
-      <footer className="fixed z-50 bottom-0 w-full rounded-lg shadow sm:flex sm:items-center sm:justify-between p-4 sm:p-6 xl:p-8 bg-gray-800 antialiased">
+      {/* <footer className="fixed z-50 bottom-0 w-full rounded-lg shadow sm:flex sm:items-center sm:justify-between p-4 sm:p-6 xl:p-8 bg-gray-800 antialiased">
         <p className="mb-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:mb-0">
           &copy; 2019-2022 <a href="https://flowbite.com/" className="hover:underline" target="_blank">Flowbite.com</a>. All rights reserved.
         </p>
@@ -75,7 +75,7 @@ function AdminLayout() {
             <div className="tooltip-arrow" data-popper-arrow></div>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 }

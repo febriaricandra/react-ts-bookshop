@@ -14,6 +14,7 @@ const Products = () => {
   const [oldPrice, setOldPrice] = useState('');
   const [newPrice, setNewPrice] = useState('');
   const [coverImage, setCoverImage] = useState(null);
+  const [weight, setWeight] = useState('');
   const [errors, setErrors] = useState<any>({});
   const [disabled, setDisabled] = useState(false);
 
@@ -51,15 +52,16 @@ const Products = () => {
 
   const validateForm = async () => {
     const errors: any = {};
-    if (!title && title.length <6) errors.title = 'Title is required and must be at least 6 characters';
+    if (!title && title.length < 6) errors.title = 'Title is required and must be at least 6 characters';
     if (!category) errors.category = 'Category is required';
     if (!oldPrice) errors.oldPrice = 'Old Price is required';
     if (!newPrice) errors.newPrice = 'New Price is required';
+    if (!weight) errors.weight = 'Weight is required';
     if (!coverImage) {
       errors.coverImage = 'Cover Image is required';
     } else {
       try {
-       await validateImage(coverImage);
+        await validateImage(coverImage);
       } catch (error) {
         errors.coverImage = error;
       }
@@ -72,7 +74,8 @@ const Products = () => {
     setDisabled(true);
     e.preventDefault();
 
-    if(!await validateForm()) {
+    if (!await validateForm()) {
+      setDisabled(false);
       return;
     }
 
@@ -83,6 +86,7 @@ const Products = () => {
     formData.append('trending', trending.toString());
     formData.append('old_price', oldPrice);
     formData.append('new_price', newPrice);
+    formData.append('weight', weight);
     if (coverImage) {
       formData.append('cover_image', coverImage);
     }
@@ -117,7 +121,7 @@ const Products = () => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               type="text" name="title" id="title" className="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500" placeholder="Type product name" required />
-              {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
+            {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
           </div>
           <div className="col-span-2 sm:col-span-1">
             <label htmlFor="price" className="block mb-2 text-sm font-medium text-white">New Price</label>
@@ -125,7 +129,7 @@ const Products = () => {
               value={newPrice}
               onChange={(e) => setNewPrice(e.target.value)}
               type="number" name="new_price" id="new_price" className="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500" placeholder="$2999" required />
-              {errors.newPrice && <p className="text-red-500 text-xs mt-1">{errors.newPrice}</p>}
+            {errors.newPrice && <p className="text-red-500 text-xs mt-1">{errors.newPrice}</p>}
           </div>
           <div className="col-span-2 sm:col-span-1">
             <label htmlFor="price" className="block mb-2 text-sm font-medium text-white">Old Price</label>
@@ -133,7 +137,7 @@ const Products = () => {
               value={oldPrice}
               onChange={(e) => setOldPrice(e.target.value)}
               type="number" name="old_price" id="old_price" className="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500" placeholder="$2999" required />
-              {errors.oldPrice && <p className="text-red-500 text-xs mt-1">{errors.oldPrice}</p>}
+            {errors.oldPrice && <p className="text-red-500 text-xs mt-1">{errors.oldPrice}</p>}
           </div>
           <div className="col-span-2 sm:col-span-1">
             <label htmlFor="category" className="block mb-2 text-sm font-medium text-white">Category</label>
@@ -165,7 +169,15 @@ const Products = () => {
             <input
               onChange={handleFileChange}
               type="file" name="cover_image" id="cover_image" className="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500" required />
-              {errors.coverImage && <p className="text-red-500 text-xs mt-1">{errors.coverImage}</p>}
+            {errors.coverImage && <p className="text-red-500 text-xs mt-1">{errors.coverImage}</p>}
+          </div>
+          <div className="col-span-2">
+            <label htmlFor="weight" className="block mb-2 text-sm font-medium text-white">Weight</label>
+            <input
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+              type="number" name="weight" id="weight" className="border text-sm rounded-lg block w-full p-2.5 bg-gray-600 border-gray-500 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500" placeholder="Gram" required />
+            {errors.weight && <p className="text-red-500 text-xs mt-1">{errors.weight}</p>}
           </div>
           <div className="col-span-2">
             <label htmlFor="description" className="block mb-2 text-sm font-medium text-white">Product Description</label>

@@ -7,6 +7,7 @@ export type Book = {
     cover_image: string;
     old_price: number;
     new_price: number;
+    weight: number;
 }
 
 export type BookResponse = {

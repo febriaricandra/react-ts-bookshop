@@ -1,6 +1,7 @@
 import { ShoppingCart } from 'lucide-react'
 import { useCart } from '../../context/CartContext'
 import { useFlashMessage } from '../../context/FlashMessageContext';
+import { Link } from 'react-router-dom';
 
 type ProductCardProps = {
     id: number;
@@ -23,10 +24,10 @@ function ProductCard({ id, title, image, new_price, old_price, description }: Pr
 
     return (
         <div className="w-full max-w-sm border border-gray-200 rounded-lg shadow border-gray-700">
-            <a href={`/books/${id}`}
+            <Link to={`/books/${id}`}
                 className='block max-h-52 overflow-hidden rounded-t-lg'>
                 <img className="mx-auto rounded-t-lg object-cover" src={image} alt={title} />
-            </a>
+            </Link>
             <div className="px-5 pb-5">
                 <a href="#">
                     <h2 className="text-2xl font-semibold tracking-tight text-white">{title}</h2>

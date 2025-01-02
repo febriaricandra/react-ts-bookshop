@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { X } from 'lucide-react'
 import OrderService from '../../services/OrderService'
+import { formatDate } from '../../utils/date'
 
 
 interface Address {
     city: string;
-    country: string;
+    province: string;
     state: string;
     zipcode: string;
+}
+
+interface Shipping {
+    shipping_type: string;
+    shipping_cost: number;
+    shipping_service: string;
 }
 
 interface Book {
@@ -39,6 +46,7 @@ interface Order {
     user_id: number;
     user: User;
     books: Book[];
+    shipping: Shipping;
 }
 
 
@@ -65,7 +73,6 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({ isOpen, onClose, id
         }
         fetchOrderDetail();
     }, [id, isOpen])
-
     return (
         <div className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-60 flex items-center justify-center overflow-hidden">
             <div className="bg-gray-900 rounded-lg shadow-xl max-w-md w-full mx-4 my-8 text-gray-100">
@@ -82,7 +89,7 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({ isOpen, onClose, id
                 {order ? (
                     <div className="p-6">
                         <div className="mb-6">
-                            <p className="text-sm text-gray-400">Date: {order.created_at}</p>
+                            <p className="text-sm text-gray-400">Date: {formatDate(order.created_at)}</p>
                         </div>
                         <div className=''>
                             <h3 className="text-lg font-semibold mb-2">Shipping Address</h3>
@@ -102,7 +109,19 @@ const OrderDetailModal: React.FC<OrderDetailModalProps> = ({ isOpen, onClose, id
                                     </tr>
                                     <tr>
                                         <td className="font-semibold">Address:</td>
-                                        <td>{order.address.city}, {order.address.state}, {order.address.country}, {order.address.zipcode}</td>
+                                        <td>{order.address.city}, {order.address.state}, {order.address.province}, {order.address.zipcode}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="font-semibold">Ship Type:</td>
+                                        <td>{order.shipping.shipping_type}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="font-semibold">Ship Cost:</td>
+                                        <td>{order.shipping.shipping_cost}</td>
+                                    </tr>
+                                    <tr>
+                                        <td className="font-semibold">Ship Service:</td>
+                                        <td>{order.shipping.shipping_service}</td>
                                     </tr>
                                 </tbody>
                             </table>
